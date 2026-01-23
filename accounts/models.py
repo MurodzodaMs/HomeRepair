@@ -9,5 +9,11 @@ class CustomUser(AbstractUser):
     )
 
     role = models.CharField(max_length=100, choices=ROLES, default='student')
+    phone = models.CharField(max_length=15)
+    
 
 
+# class Profile(models.Model):
+#     user = models.OneToOneField(CustomUser, 
+#         on_delete=models.CASCADE, related_name='profile'
+#     )
