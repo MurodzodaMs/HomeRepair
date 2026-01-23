@@ -9,5 +9,6 @@ urlpatterns = [
     path('register/', UserCreateAPIView.as_view()),
     path('login/', TokenObtainPairView.as_view()),
     path('token/refresh/', TokenRefreshView.as_view()),
-    path('logout/', LogoutAPIVIew.as_view())
+    path('logout/', LogoutAPIVIew.as_view()),
+    path('profile', ProfileAPIView.as_view())
 ]

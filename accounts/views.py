@@ -28,4 +28,23 @@ class LogoutAPIVIew(APIView):
                 {'detail':'Invalid token'},
                 status=status.HTTP_400_BAD_REQUEST
             )
+        
+class ProfileAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request):
+        queryset = request.user
+        serializer = ProfileSerializer(queryset)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    def patch(self, request):
+        queryset = request.user
+        serializer = ProfileSerializer(queryset, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+
 
