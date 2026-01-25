@@ -8,8 +8,10 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend  # type: ignore
 
+
 from .serializers import *
 from .models import *
+from .permissions import *
 
 
 class ServicePagination(PageNumberPagination):
@@ -20,7 +22,7 @@ class ServicePagination(PageNumberPagination):
 
 class CategoryAPIView(ModelViewSet):
     queryset = Category.objects.filter(is_active=True)
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAdminOrReadOnly, IsAuthenticated]
     serializer_class = CategorySerializer
     filterset_fields = ['title', 'description']
     filter_backends = [DjangoFilterBackend, SearchFilter]
@@ -30,7 +32,7 @@ class CategoryAPIView(ModelViewSet):
 class ServiceAPIView(ModelViewSet):
     queryset = Service.objects.filter(is_active=True)
     pagination_class = ServicePagination
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAdminOrReadOnly]
     # serializer_class = ServiceSerializer
     filterset_fields = ['title', 'description']
     filter_backends = [DjangoFilterBackend, SearchFilter]
@@ -55,3 +57,5 @@ class ServiceAPIView(ModelViewSet):
             },
             status=status.HTTP_200_OK
         )
+
+

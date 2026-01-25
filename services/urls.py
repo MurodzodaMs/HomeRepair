@@ -6,7 +6,5 @@ router = DefaultRouter()
 router.register('categories', CategoryAPIView, basename='category')
 router.register('', ServiceAPIView, basename='service')
 
-urlpatterns = [
-
-]
+urlpatterns = []
 urlpatterns.extend(router.urls)
