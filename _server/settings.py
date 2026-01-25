@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'accounts',
     'services',
     'orders',
+    'panel',
+    'brigade',
 
     'rest_framework',
     'django_filters',
