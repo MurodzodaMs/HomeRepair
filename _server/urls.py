@@ -20,6 +20,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('accounts.urls')),
     path('services/', include('services.urls')),
+    path('orders/', include('orders.urls')),
 
     re_path(
         r'^swagger/$',
