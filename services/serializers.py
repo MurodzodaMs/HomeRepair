@@ -22,4 +22,4 @@ class ServiceCreateSerializer(serializers.ModelSerializer):
     is_active = serializers.BooleanField(write_only=True)
     class Meta:
         model = Service
-        fields = ['id', 'title', 'category', 'description', 'base_price', 'created_at', 'is_active']
+        fields = ['id', 'title', 'category', 'description', 'base_price', 'created_at', 'is_active', 'brigade']
