@@ -103,6 +103,13 @@ MIDDLEWARE = [
 ]
 
 
+CORS_ALLOW_HEADERS = [
+    'authorization',
+    'content-type',
+]
+
+
+
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
