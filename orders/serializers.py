@@ -6,7 +6,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model=Order
-        fields = ['id', 'client', 'service', 'address', 'status', 'start_date', 'end_date', 'is_delete']
+        fields = ['id', 'client','phone', 'service', 'address', 'status', 'start_date', 'end_date', 'is_delete']
 
 
 class OrderClientSerializer(serializers.ModelSerializer):
@@ -14,7 +14,7 @@ class OrderClientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model=Order
-        fields = ['id', 'client', 'service', 'address', 'status', 'start_date', 'end_date']
+        fields = ['id', 'client', 'phone', 'service', 'address', 'status', 'start_date', 'end_date']
 
 
 
@@ -25,4 +25,4 @@ class OrderCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model=Order
-        fields = ['client', 'service', 'address', 'start_date', 'end_date']
+        fields = ['client', 'phone', 'service', 'address', 'start_date', 'end_date']

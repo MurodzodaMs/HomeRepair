@@ -14,6 +14,7 @@ class Order(models.Model):
     client = models.ForeignKey(CustomUser, 
         related_name='user_orders', on_delete=models.CASCADE
     )
+    phone = models.CharField(max_length=15)
     service = models.ForeignKey(Service,
         related_name='service_order', on_delete=models.CASCADE)
     address = models.CharField(max_length=200)

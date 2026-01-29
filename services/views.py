@@ -30,7 +30,6 @@ class CategoryAPIView(ModelViewSet):
 
 
 class ServiceAPIView(ModelViewSet):
-    queryset = Service.objects.filter(is_active=True)
     pagination_class = ServicePagination
     permission_classes = [IsAuthenticated, IsAdminOrReadOnly]
     # serializer_class = ServiceSerializer
@@ -39,10 +38,18 @@ class ServiceAPIView(ModelViewSet):
     search_fields = ['title', 'description']
 
     def get_serializer_class(self):
-        if self.action in ['create', 'update']:
+        if self.action in ['create', 'update', 'partial_update']:
             return ServiceCreateSerializer
+        if self.action == 'retrieve':
+            return ServiceDetailSerializer
         else:
             return ServiceSerializer
+
+    def get_queryset(self):
+        qs = Service.objects.filter(is_active=True)
+        if self.action == 'retrieve':
+            qs = qs.prefetch_related('photos')
+        return qs
 
 
     def list(self, request, *args, **kwargs):
@@ -57,5 +64,8 @@ class ServiceAPIView(ModelViewSet):
             },
             status=status.HTTP_200_OK
         )
-
-
+ 
+    def retrieve(self, request, *args, **kwargs):
+        service = self.get_object()
+        serializer = self.get_serializer(service)
+        return Response(serializer.data, status=status.HTTP_200_OK)

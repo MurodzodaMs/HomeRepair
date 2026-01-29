@@ -1,3 +1,9 @@
 .venv
 db.sqlite3
 readme.md
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd

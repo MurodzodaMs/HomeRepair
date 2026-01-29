@@ -4,6 +4,7 @@ from rest_framework.permissions import *
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
+
 from .models import *
 from .serializers import *
 from .permissions import *
@@ -35,5 +36,6 @@ class OrderDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
         instance.is_delete = True
         instance.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
