@@ -24,12 +24,13 @@ class ServicePagination(PageNumberPagination):
 
 
 class CategoryAPIView(ModelViewSet):
-    queryset = Category.objects.filter(is_active=True)
+    queryset = Category.objects.all()
     permission_classes = [IsAdminOrReadOnly, IsAuthenticated]
     serializer_class = CategorySerializer
     filterset_fields = ['title', 'description']
     filter_backends = [DjangoFilterBackend, SearchFilter]
     search_fields = ['title', 'description']
+    parser_classes = [MultiPartParser, FormParser]
 
 
 class ServiceAPIView(ModelViewSet):
