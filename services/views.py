@@ -35,7 +35,7 @@ class CategoryAPIView(ModelViewSet):
 
 class ServiceAPIView(ModelViewSet):
     pagination_class = ServicePagination
-    permission_classes = [IsAuthenticated, IsAdminOrReadnly]
+    permission_classes = [IsAuthenticated, IsAdminOrReadOnly]
     # serializer_class = ServiceSerializer
     filterset_fields = ['title', 'description']
     filter_backends = [DjangoFilterBackend, SearchFilter]

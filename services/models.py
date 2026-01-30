@@ -7,7 +7,7 @@ class Category(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
     is_active = models.BooleanField(default=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.DecimalField
     image = models.ImageField(upload_to='categories/', null=True, blank=True)
     created_at = models.DateField(auto_now_add=True)
 
