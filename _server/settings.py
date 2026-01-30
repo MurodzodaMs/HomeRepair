@@ -111,7 +111,8 @@ CORS_ALLOW_HEADERS = [
 
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
+    "http://localhost",
+    # "http://localhost:3001",
 ]
 
 

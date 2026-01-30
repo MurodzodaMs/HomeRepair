@@ -30,6 +30,7 @@ class LogoutAPIVIew(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
         
+
 class ProfileAPIView(APIView):
     permission_classes = [IsAuthenticated]
     
@@ -38,6 +39,13 @@ class ProfileAPIView(APIView):
         serializer = ProfileSerializer(queryset)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
+    @swagger_auto_schema(
+        request_body=ProfileSerializer,
+        # responses={
+        #     status.HTTP_200_OK: ProfileSerializer,
+        #     status.HTTP_400_BAD_REQUEST: ProfileSerializer
+        # }
+    )
     def patch(self, request):
         queryset = request.user
         serializer = ProfileSerializer(queryset, data=request.data, partial=True)

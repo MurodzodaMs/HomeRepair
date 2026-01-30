@@ -1,6 +1,7 @@
 .venv
 db.sqlite3
 readme.md
+media
 
 # Python
 __pycache__/
