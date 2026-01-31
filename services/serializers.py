@@ -11,6 +11,12 @@ class CategorySerializer(serializers.ModelSerializer):
         read_only_fields = ['id']
 
 
+class BrigadeServiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Brigade
+        fields = ['id', 'name']
+
+
 class ServicePhotoSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -19,7 +25,7 @@ class ServicePhotoSerializer(serializers.ModelSerializer):
 
 
 class ServiceSerializer(serializers.ModelSerializer):
-    is_active = serializers.BooleanField(write_only=True)
+    is_active = serializers.BooleanField(read_only=True)
     category = serializers.CharField(source='category.title')
 
     class Meta:
@@ -29,7 +35,8 @@ class ServiceSerializer(serializers.ModelSerializer):
 
 
 class ServiceDetailSerializer(serializers.ModelSerializer):
-    is_active = serializers.BooleanField(write_only=True)
+    brigade = BrigadeServiceSerializer(read_only=True)
+    is_active = serializers.BooleanField(read_only=True)
     category = serializers.CharField(source='category.title')
     photos = ServicePhotoSerializer(many=True)
 
@@ -60,6 +67,15 @@ class ServiceCreateSerializer(serializers.ModelSerializer):
             ServicePhoto.objects.create(service=service, photo=photo)
 
         return service
+
+    def update(self, instance, validated_data):
+        photos = validated_data.pop('photos', [])
+        instance = super().update(instance, validated_data)
+
+        for photo in photos:
+            ServicePhoto.objects.create(service=instance, photo=photo)
+
+        return instance
 
 
 class ServiceCreateSwaggerSerializer(ServiceCreateSerializer):

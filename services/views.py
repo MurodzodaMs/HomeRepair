@@ -24,13 +24,17 @@ class ServicePagination(PageNumberPagination):
 
 
 class CategoryAPIView(ModelViewSet):
-    queryset = Category.objects.all()
     permission_classes = [IsAdminOrReadOnly, IsAuthenticated]
     serializer_class = CategorySerializer
     filterset_fields = ['title', 'description']
     filter_backends = [DjangoFilterBackend, SearchFilter]
     search_fields = ['title', 'description']
     parser_classes = [MultiPartParser, FormParser]
+
+    def get_queryset(self):
+        if self.request.user.is_staff:
+            return Category.objects.all()
+        return Category.objects.filter(is_active=True)
 
 
 class ServiceAPIView(ModelViewSet):
@@ -96,25 +100,36 @@ class ServiceAPIView(ModelViewSet):
             return ServiceSerializer
 
     def get_queryset(self):
-        qs = Service.objects.filter(is_active=True)
+        if self.request.user.is_staff:
+            qs = Service.objects.all()
+        else:
+            qs = Service.objects.filter(is_active=True)
+
         if self.action == 'retrieve':
             qs = qs.prefetch_related('photos')
         return qs
 
     def list(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
-        categories = Category.objects.filter(is_active=True)
+        queryset = self.filter_queryset(self.get_queryset())
+
+        if request.user.is_staff:
+            categories = Category.objects.all()
+        else:
+            categories = Category.objects.filter(is_active=True)
         cat_serializer = CategorySerializer(categories, many=True)
-        ser_serializer = ServiceSerializer(queryset, many=True)
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            services_data = self.get_paginated_response(serializer.data).data
+        else:
+            serializer = self.get_serializer(queryset, many=True)
+            services_data = serializer.data
+
         return Response(
             {
                 'categories': cat_serializer.data,
-                'services': ser_serializer.data
+                'services': services_data
             },
             status=status.HTTP_200_OK
         )
-
-    def retrieve(self, request, *args, **kwargs):
-        service = self.get_object()
-        serializer = self.get_serializer(service)
-        return Response(serializer.data, status=status.HTTP_200_OK)
